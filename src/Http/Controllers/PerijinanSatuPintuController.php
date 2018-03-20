@@ -10,6 +10,7 @@ use Bantenprov\BudgetAbsorption\Facades\PerijinanSatuPintuFacade;
 /* Models */
 use Bantenprov\PerijinanSatuPintu\Models\Bantenprov\PerijinanSatuPintu\PerijinanSatuPintu;
 use Bantenprov\GroupEgovernment\Models\Bantenprov\GroupEgovernment\GroupEgovernment;
+use Bantenprov\SectorEgovernment\Models\Bantenprov\SectorEgovernment\SectorEgovernment;
 use App\User;
 
 /* Etc */
@@ -29,13 +30,15 @@ class PerijinanSatuPintuController extends Controller
      * @return void
      */
     protected $group_egovernmentModel;
+    protected $sector_egovernment;
     protected $perijinan_satu_pintu;
     protected $user;
 
-    public function __construct(PerijinanSatuPintu $perijinan_satu_pintu, GroupEgovernment $group_egovernment, User $user)
+    public function __construct(PerijinanSatuPintu $perijinan_satu_pintu, GroupEgovernment $group_egovernment, SectorEgovernment $sector_egovernment, User $user)
     {
         $this->perijinan_satu_pintu      = $perijinan_satu_pintu;
         $this->group_egovernmentModel    = $group_egovernment;
+        $this->sector_egovernment    = $sector_egovernment;
         $this->user             = $user;
     }
 
@@ -69,6 +72,10 @@ class PerijinanSatuPintuController extends Controller
             array_set($response->data, 'group_egovernment', $group_egovernment->group_egovernment->label);
         }
 
+        foreach($response as $sector_egovernment){
+            array_set($response->data, 'sector_egovernment', $sector_egovernment->sector_egovernment->label);
+        }
+
         foreach($response as $user){
             array_set($response->data, 'user', $user->user->name);
         }
@@ -86,6 +93,7 @@ class PerijinanSatuPintuController extends Controller
     public function create()
     {
         $group_egovernment = $this->group_egovernmentModel->all();
+        $sector_egovernment = $this->sector_egovernment->all();
         $users = $this->user->all();
 
         foreach($users as $user){
@@ -93,6 +101,7 @@ class PerijinanSatuPintuController extends Controller
         }
 
         $response['group_egovernment'] = $group_egovernment;
+        $response['sector_egovernment'] = $sector_egovernment;
         $response['user'] = $users;
         $response['status'] = true;
 
@@ -111,8 +120,9 @@ class PerijinanSatuPintuController extends Controller
 
         $validator = Validator::make($request->all(), [
             'group_egovernment_id' => 'required',
+            'sector_egovernment_id' => 'required',
             'user_id' => 'required',
-            'label' => 'required|max:16|unique:perijinan_satu_pintus,label',
+            'label' => 'required|max:255|unique:perijinan_satu_pintus,label',
             'description' => 'max:255',
         ]);
 
@@ -123,6 +133,7 @@ class PerijinanSatuPintuController extends Controller
                 $response['message'] = 'Failed, label ' . $request->label . ' already exists';
             } else {
                 $perijinan_satu_pintu->group_egovernment_id = $request->input('group_egovernment_id');
+                $perijinan_satu_pintu->sector_egovernment_id = $request->input('sector_egovernment_id');
                 $perijinan_satu_pintu->user_id = $request->input('user_id');
                 $perijinan_satu_pintu->label = $request->input('label');
                 $perijinan_satu_pintu->description = $request->input('description');
@@ -132,6 +143,7 @@ class PerijinanSatuPintuController extends Controller
             }
         } else {
             $perijinan_satu_pintu->group_egovernment_id = $request->input('group_egovernment_id');
+            $perijinan_satu_pintu->sector_egovernment_id = $request->input('sector_egovernment_id');
             $perijinan_satu_pintu->user_id = $request->input('user_id');
             $perijinan_satu_pintu->label = $request->input('label');
             $perijinan_satu_pintu->description = $request->input('description');
@@ -156,6 +168,7 @@ class PerijinanSatuPintuController extends Controller
 
         $response['perijinan_satu_pintu'] = $perijinan_satu_pintu;
         $response['group_egovernment'] = $perijinan_satu_pintu->group_egovernment;
+        $response['sector_egovernment'] = $perijinan_satu_pintu->sector_egovernment;
         $response['user'] = $perijinan_satu_pintu->user;
         $response['status'] = true;
 
@@ -176,6 +189,7 @@ class PerijinanSatuPintuController extends Controller
 
         $response['perijinan_satu_pintu'] = $perijinan_satu_pintu;
         $response['group_egovernment'] = $perijinan_satu_pintu->group_egovernment;
+        $response['sector_egovernment'] = $perijinan_satu_pintu->sector_egovernment;
         $response['user'] = $perijinan_satu_pintu->user;
         $response['status'] = true;
 
@@ -196,16 +210,18 @@ class PerijinanSatuPintuController extends Controller
         if ($request->input('old_label') == $request->input('label'))
         {
             $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16',
+                'label' => 'required|max:255',
                 'description' => 'max:255',
                 'group_egovernment_id' => 'required',
+                'sector_egovernment_id' => 'required',
                 'user_id' => 'required',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16|unique:perijinan_satu_pintus,label',
+                'label' => 'required|max:255|unique:perijinan_satu_pintus,label',
                 'description' => 'max:255',
                 'group_egovernment_id' => 'required',
+                'sector_egovernment_id' => 'required',
                 'user_id' => 'required',
             ]);
         }
@@ -219,6 +235,7 @@ class PerijinanSatuPintuController extends Controller
                 $perijinan_satu_pintu->label = $request->input('label');
                 $perijinan_satu_pintu->description = $request->input('description');
                 $perijinan_satu_pintu->group_egovernment_id = $request->input('group_egovernment_id');
+                $perijinan_satu_pintu->sector_egovernment_id = $request->input('sector_egovernment_id');
                 $perijinan_satu_pintu->user_id = $request->input('user_id');
                 $perijinan_satu_pintu->save();
 
@@ -228,6 +245,7 @@ class PerijinanSatuPintuController extends Controller
             $perijinan_satu_pintu->label = $request->input('label');
             $perijinan_satu_pintu->description = $request->input('description');
             $perijinan_satu_pintu->group_egovernment_id = $request->input('group_egovernment_id');
+            $perijinan_satu_pintu->sector_egovernment_id = $request->input('sector_egovernment_id');
             $perijinan_satu_pintu->user_id = $request->input('user_id');
             $perijinan_satu_pintu->save();
 

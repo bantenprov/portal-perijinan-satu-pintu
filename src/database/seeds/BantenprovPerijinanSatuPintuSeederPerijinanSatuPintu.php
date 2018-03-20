@@ -22,12 +22,14 @@ class BantenprovPerijinanSatuPintuSeederPerijinanSatuPintu extends Seeder
             (object) [
                 'user_id' => '1',
                 'group_egovernment_id' => '1',
+                'sector_egovernment_id' => '1',
                 'label' => 'GroupEgovernment 1',
                 'description' => 'GroupEgovernment satu'
             ],
             (object) [
                 'user_id' => '2',
                 'group_egovernment_id' => '2',
+                'sector_egovernment_id' => '2',
                 'label' => 'GroupEgovernment 2',
                 'description' => 'GroupEgovernment dua',
             ]
@@ -38,6 +40,7 @@ class BantenprovPerijinanSatuPintuSeederPerijinanSatuPintu extends Seeder
                 [
                     'user_id' => $perijinan_satu_pintu->user_id,
                     'group_egovernment_id' => $perijinan_satu_pintu->group_egovernment_id,
+                    'sector_egovernment_id' => $perijinan_satu_pintu->sector_egovernment_id,
                     'label' => $perijinan_satu_pintu->label,
                     'description' => $perijinan_satu_pintu->description,
                 ]
