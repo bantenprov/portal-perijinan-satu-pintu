@@ -16,36 +16,47 @@
       <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
         <div class="form-row">
           <div class="col-md">
-            <b>Label :</b> {{ model.label }}
+            {{ model.label }}
           </div>
         </div>
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Description :</b> {{ model.description }}
+             {{ model.description }}
           </div>
         </div>
 
         <div class="form-row mt-4">
 					<div class="col-md">
-						<b>Username :</b> {{ model.user.name }}
-					</div>
-				</div>
-
-        <div class="form-row mt-4">
-					<div class="col-md">
-						<b>Group :</b> {{ model.group_egovernment.label }}
+						{{ model.group_egovernment.label }}
 					</div>
 				</div>
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Sector :</b> {{ model.sector_egovernment.label }}
+            {{ model.sector_egovernment.label }}
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+           <b> <a v-bind:href="model.link" target='_blank'> {{ model.link }} </a></b>
           </div>
         </div>
 
       </vue-form>
     </div>
+     <div class="card-footer text-muted">
+        <div class="row">
+          <div class="col-md">
+            <b>Username :</b> {{ model.user.name }}
+          </div>
+          <div class="col-md">
+            <div class="col-md text-right">Dibuat : {{ model.created_at }}</div>
+            <div class="col-md text-right">Diperbaiki : {{ model.updated_at }}</div>
+          </div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -61,6 +72,9 @@ export default {
           this.model.group_egovernment = response.data.group_egovernment;
           this.model.sector_egovernment = response.data.sector_egovernment;
           this.model.user = response.data.user;
+          this.model.link               = response.data.perijinan_satu_pintu.link;
+          this.model.created_at = response.data.perijinan_satu_pintu.created_at;
+          this.model.updated_at = response.data.perijinan_satu_pintu.updated_at;
         } else {
           alert('Failed');
         }
@@ -87,8 +101,11 @@ export default {
         label: "",
         description: "",
         user:"",
+        link:"",
         group_egovernment: "",
         sector_egovernment: "",
+        created_at:         "",
+        updated_at:         ""
       },
       group_egovernment: [],
       sector_egovernment: [],

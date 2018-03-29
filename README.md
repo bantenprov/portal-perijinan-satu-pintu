@@ -83,6 +83,42 @@ $ php artisan vendor:publish --tag=perijinan-satu-pintu-public
 #### Tambahkan route di dalam file : `resources/assets/js/routes.js` :
 
 ```javascript
+function layout(name) {
+  return function(resolve) {
+    require(['./layouts/' + name + '.vue'], resolve);
+  }
+}
+
+let routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: resolve => require(['./components/views/Home.vue'], resolve),
+  },
+   //==...
+
+  {
+    path: '/perijinan-satu-pintu/:id',
+    name: 'home',
+    component: resolve => require(['./components/bantenprov/perijinan-satu-pintu/PerijinanSatuPintu.show.vue'], resolve),
+    meta: {
+        title: "Portal Perijinan Satu Pintu"
+    }
+   },
+
+  //==..
+  
+  {
+    path: '/sign-in',
+    name: 'sign-in',
+    component: resolve => require(['./components/views/SignIn.vue'], resolve),
+    meta: {
+      title: "Sign in"
+    }
+  },
+```
+
+```javascript
 {
     path: '/dashboard',
     redirect: '/dashboard/home',

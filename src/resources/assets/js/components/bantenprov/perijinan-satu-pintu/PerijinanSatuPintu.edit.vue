@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i> Edit perijinan-satu-pintu
+      <i class="fa fa-table" aria-hidden="true"></i> Edit Portal Perijinan Satu Pintu
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -33,6 +33,18 @@
               <input class="form-control" v-model="model.description" name="description" type="text" placeholder="Description">
 
               <field-messages name="description" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.link" name="link" type="text" placeholder="link">
+
+              <field-messages name="link" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
               </field-messages>
             </validate>
@@ -102,6 +114,7 @@ export default {
         if (response.data.status == true) {
           this.model.user = response.data.user,
           this.model.label = response.data.perijinan_satu_pintu.label;
+          this.model.link = response.data.perijinan_satu_pintu.link;
           this.model.old_label = response.data.perijinan_satu_pintu.label;
           this.model.description = response.data.perijinan_satu_pintu.description;
           this.model.group_egovernment = response.data.group_egovernment;
@@ -137,6 +150,7 @@ export default {
       model: {
         label: "",
         user: "",
+        link: "",
         description: "",
         group_egovernment: "",
         sector_egovernment: "",
@@ -157,6 +171,7 @@ export default {
             label: this.model.label,
             description: this.model.description,
             old_label: this.model.old_label,
+            link: this.model.link,
             group_egovernment_id: this.model.group_egovernment.id,
             sector_egovernment_id: this.model.sector_egovernment.id,
             user_id: this.model.user.id
@@ -183,6 +198,7 @@ export default {
         .then(response => {
           if (response.data.status == true) {
             this.model.label = response.data.perijinan_satu_pintu.label;
+            this.model.link = response.data.perijinan_satu_pintu.link;
             this.model.description = response.data.perijinan_satu_pintu.description;
           } else {
             alert('Failed');
